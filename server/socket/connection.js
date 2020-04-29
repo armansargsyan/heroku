@@ -31,7 +31,7 @@ function socketConnect(server) {
             friend.requestSend(req, {})
                 .then(res => {
                     cb(res.sent);
-                    if (res.sent){
+                    if (res.sent && res.friendSocket){
                         io.to(res.friendSocket).emit('friendRequest', req.id);
                     }
                 });
@@ -64,9 +64,7 @@ function socketConnect(server) {
                     if (res.friendSocket){
                         io.to(res.friendSocket).emit('friendDelete', req.id);
                     }
-                    else {
-                        console.log('friendSocket error');
-                    }
+
                 });
         });
 

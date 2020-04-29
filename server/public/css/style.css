@@ -283,6 +283,13 @@ div.errorClose{
   /* z-index: 4; */
   /* box-shadow: 0 0 10px black; */
 }
+
+/*--------------Log Out button--------------*/
+/*a.logOutButton{*/
+/*  position: fixed;*/
+/*  right: 0;*/
+
+/*}*/
 /*---------language flages------------*/
 a.flag{
   position: fixed;
@@ -295,8 +302,8 @@ a.flag{
   border-radius: 50%;
   background-color: white;
 
-  z-index: -1
-  ;
+  z-index: -1;
+
   transition: 0.5s;
   opacity: 0;
   visibility: hidden;
@@ -486,6 +493,13 @@ a.supportButton{
 a.languageButton{
   background-image: url("img/iconEngFlag.png");
   background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+a.logOutButton{
+  background-image: url("img/iconLogOut.png");
+  background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -942,7 +956,7 @@ div.friendRequestButton > div{
 }
 
 div.deletedFriendAccount{
-  transform: translateY(-100px);
+  /*transform: translateY(-100px);*/
 
   height: 0;
   opacity: 0;

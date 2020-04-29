@@ -43,8 +43,10 @@ const friend = {
                   if (found.friendsId.indexOf(req.friendId) === -1 &&
                       found.friendRequestsId.indexOf(req.friendId) === -1 &&
                       found.sentRequestsId.indexOf(req.friendId) === -1){
+
                     found.sentRequestsId.push(req.friendId);
                     friendFound.friendRequestsId.push(req.id);
+
                   }
                   else {
                     res.status = 200;
@@ -122,12 +124,17 @@ const friend = {
                 }
                 else {
 
+                  if (found.friendRequestsId.indexOf(req.friendId) !== -1)
+                   found.friendRequestsId.splice(found.friendRequestsId.indexOf(req.friendId),1);
 
-                  found.friendRequestsId.splice(found.friendRequestsId.indexOf(req.friendId),1);
-                  found.friendsId.push(req.friendId);
+                  if (found.friendsId.indexOf(req.friendId) === -1)
+                    found.friendsId.push(req.friendId);
 
-                  friendFound.sentRequestsId.splice(friendFound.sentRequestsId.indexOf(req.id),1);
-                  friendFound.friendsId.push(req.id);
+                  if (friendFound.sentRequestsId.indexOf(req.id) !== -1)
+                   friendFound.sentRequestsId.splice(friendFound.sentRequestsId.indexOf(req.id),1);
+
+                  if (friendFound.friendsId.indexOf(req.id) === -1)
+                    friendFound.friendsId.push(req.id);
 
 
                   friendFound.save(err => {
@@ -199,8 +206,11 @@ const friend = {
               }
               else {
 
-                found.friendRequestsId.splice(found.friendRequestsId.indexOf(req.friendId),1);
-                friendFound.sentRequestsId.splice(friendFound.sentRequestsId.indexOf(req.id),1);
+                if (found.friendRequestsId.indexOf(req.friendId) !== -1)
+                  found.friendRequestsId.splice(found.friendRequestsId.indexOf(req.friendId),1);
+
+                if (friendFound.sentRequestsId.indexOf(req.id) !== -1)
+                  friendFound.sentRequestsId.splice(friendFound.sentRequestsId.indexOf(req.id),1);
 
                 found.save(err => {
                   if (err){
@@ -265,8 +275,12 @@ const friend = {
                 resolve(res);
               }
               else {
-                found.friendsId.splice(found.friendsId.indexOf(req.friendId),1);
-                friendFound.friendsId.splice(friendFound.friendsId.indexOf(req.id),1);
+
+                if(found.friendsId.indexOf(req.friendId) !== -1)
+                  found.friendsId.splice(found.friendsId.indexOf(req.friendId),1);
+
+                if(friendFound.friendsId.indexOf(req.id) !== -1)
+                  friendFound.friendsId.splice(friendFound.friendsId.indexOf(req.id),1);
 
                 found.save(err => {
                   if (err){

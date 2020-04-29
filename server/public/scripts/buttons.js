@@ -157,7 +157,7 @@ const conteiner = {
   layer: document.querySelector('.conteiner')
 };
 
-const conteinerLayer= {
+const conteinerLayer = {
     layer: document.querySelector('.conteinerLayer'),
     change(){
       if (this.layer.dataset.active == "false") this.show();
@@ -183,6 +183,10 @@ const conteinerLayer= {
 
     }
 };
+
+document.querySelector('.logOutButton').addEventListener('click', () => {
+  buttons.menuButton.click();
+});
 
 const buttons = {
 

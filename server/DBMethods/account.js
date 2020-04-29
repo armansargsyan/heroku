@@ -136,40 +136,46 @@ const account = {
         if (!found) {
           res.status = 200;
           res.entered = false;
-          res.body = 'Email not found';
+          res.body = 'wrongEmail';
           console.log('Email not found');
           resolve(res);
-          return;
         }
-
-        if (req.password !== found.password) {
+        else if (req.password !== found.password) {
           res.status = 200;
           res.entered = false;
           res.body = 'wrongPassword';
           console.log('Wrong password');
           resolve(res);
-          return;
         }
+        else if(found.online){
+          console.log(found);
+          res.status = 200;
+          res.entered = false;
+          res.body = 'alreadyOnline';
+          console.log('account online');
+          resolve(res);
+        }
+        else {
+          res.status = 200;
+          res.entered = true;
+          res.body = {};
+          res.body.email = found.email;
+          res.body.id = found.id;
+          res.body.nickName = found.nickName;
+          res.body.age = found.age;
+          if(found.country && found.city)
+            res.body.country = found.country + '`';
+          else
+            res.body.country = found.country;
+          res.body.city = found.city;
+          res.body.friendsId = found.friendsId;
+          res.body.friendRequestsId = found.friendRequestsId;
+          res.body.sentRequestsId = found.sentRequestsId;
+          res.body.profilePicture = found.profilePicture;
 
-        res.status = 200;
-        res.entered = true;
-        res.body = {};
-        res.body.email = found.email;
-        res.body.id = found.id;
-        res.body.nickName = found.nickName;
-        res.body.age = found.age;
-        if(found.country && found.city)
-          res.body.country = found.country + '`';
-        else
-          res.body.country = found.country;
-        res.body.city = found.city;
-        res.body.friendsId = found.friendsId;
-        res.body.friendRequestsId = found.friendRequestsId;
-        res.body.sentRequestsId = found.sentRequestsId;
-        res.body.profilePicture = found.profilePicture;
-
-        console.log("entered");
-        resolve(res);
+          console.log("entered");
+          resolve(res);
+        }
       });
     });
 

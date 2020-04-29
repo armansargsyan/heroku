@@ -14,9 +14,9 @@ const socket = require('./socket/connection');
 const app = express();
 
 const Port = 5000;
-
+//mongodb://localhost:27017/esim
 function engine() {
-  mongoose.connect('mongodb+srv://heroku:1111@cluster0-7l3fr.mongodb.net/test?retryWrites=true&w=majority',{
+  mongoose.connect('mongodb+srv://heroku:1111@cluster0-7l3fr.mongodb.net/',{
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -47,5 +47,9 @@ app.get('/',(req, res) => {
 });
 
 
-const server = app.listen(Port, console.log(`Server has been started on port ${Port}......`));
+const server = app.listen(Port, () => {
+
+  console.log(`Server has been started on port ${Port}......`)
+
+});
 socket(server);

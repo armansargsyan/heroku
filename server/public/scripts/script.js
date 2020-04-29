@@ -25,8 +25,10 @@ const language = {
     sendFriendRequest: "Ուղարկել հրավեր",
     //errors
     wrongPassword: 'Գաղտնաբառը սխալ է',
+    wrongEmail: 'Էլեկտրոնային հասցեն սխալ է',
     emailUsed: 'Էլեկտրոնային հասցեն զբաղված է',
-    wrongPin: "Պին կոդը սխալ է"
+    wrongPin: "Պին կոդը սխալ է",
+    alreadyOnline: 'Էջոը արդեն առցանց է'
 
   },
 
@@ -54,9 +56,12 @@ const language = {
     friendRequestSent: "Request has already been sent",
     sendFriendRequest: "Send friend request",
     //errors
-    wrongPassword: 'Password is wrong',
+    wrongPassword: 'Password is incorrect',
+    wrongEmail: 'Email is incorrect',
     emailUsed: 'Email is used',
-    wrongPin: "PIN is wrong"
+    wrongPin: "PIN is incorrect",
+    alreadyOnline: 'Account is already online'
+
 
 
 
@@ -88,9 +93,12 @@ const language = {
     friendRequestSent: "Запрос отправлен",
     sendFriendRequest: "Отправить запрос",
     //errors
-    wrongPassword: 'Неверный пароль',
+    wrongPassword: 'Неправельный пароль',
+    wrongEmail: 'Неправельная электронная почта',
     emailUsed: 'Электронная почта занята',
-    wrongPin: "Неверный ПИН код"
+    wrongPin: "Неверный ПИН код",
+    alreadyOnline: 'Аккаунт уже онлайн'
+
 
   },
 
@@ -140,6 +148,10 @@ document.querySelector('form.searchFriendForm').addEventListener('submit', () =>
   document.querySelector('div.searchResultList').innerHTML = "";
 });
 
+document.querySelector('.logOutButton').onclick = () => {
+  account.entered = false;
+  account.authentication();
+};
 function notification(string){
   let notification = document.querySelector('.notification');
   notification.innerHTML = string;
@@ -171,14 +183,16 @@ const account = {
         page.style.display = 'none';
       });
       document.querySelector('div.play').style.display = 'block';
-      document.querySelectorAll('.avatarka').forEach(avatarka => {
-        avatarka.style.backgroundImage = `url('${account.owner.profilePicture}')`;
+      document.querySelectorAll('.avatarka').forEach(avatar => {
+        avatar.style.backgroundImage = `url('${account.owner.profilePicture}')`;
       });
+
     }
     else {
       document.querySelector('.authenticationDiv').style.display = "flex";
-
+      socket.disconnect();
       this.owner = {};
+      // socket = undefined;
     }
   },
 
@@ -517,7 +531,9 @@ const friend = {
       };
       socket.emit('friendDelete', req, res => {
         if (res){
-          account.owner.friendsId.splice(account.owner.friendsId.indexOf(req.friendId),1);
+          if (account.owner.friendsId.indexOf(req.friendId) !== -1)
+            account.owner.friendsId.splice(account.owner.friendsId.indexOf(req.friendId),1);
+
           button.parentElement.classList.add('deletedFriendAccount');
           setTimeout(() => {
             button.parentElement.style.display = 'none';
@@ -585,7 +601,9 @@ const friend = {
       socket.emit('friendRequestRemove', req, res => {
         if (res){
 
-          account.owner.friendRequestsId.splice(account.owner.friendRequestsId.indexOf(req.friendId),1);
+          if (account.owner.friendRequestsId.indexOf(req.friendId) !== -1)
+            account.owner.friendRequestsId.splice(account.owner.friendRequestsId.indexOf(req.friendId),1);
+
           button.parentElement.classList.add('deleteFriendRequestAccount');
 
           setTimeout(() => {
@@ -607,8 +625,13 @@ const friend = {
       };
       socket.emit('friendAdd', req, res => {
         if (res){
-          account.owner.friendsId.push(req.friendId);
-          account.owner.friendRequestsId.splice(account.owner.friendRequestsId.indexOf(res),1);
+
+          if (account.owner.friendRequestsId.indexOf(req.friendId) !== -1)
+            account.owner.friendRequestsId.splice(account.owner.friendRequestsId.indexOf(req.friendId),1);
+
+          if (account.owner.friendsId.indexOf(req.friendId) === -1)
+            account.owner.friendsId.push(req.friendId);
+
           button.parentElement.classList.add('deleteFriendRequestAccount');
 
           setTimeout(() => {
@@ -790,9 +813,11 @@ function socketConnection(path) {
 
     socket.on('friendAdd', res => {
 
-      account.owner.friendsId.push(res);
+      if (account.owner.friendsId.indexOf(res) === -1)
+        account.owner.friendsId.push(res);
 
-      account.owner.sentRequestsId.splice(account.owner.sentRequestsId.indexOf(res),1);
+      if (account.owner.sentRequestsId.indexOf(res) !== -1)
+       account.owner.sentRequestsId.splice(account.owner.sentRequestsId.indexOf(res),1);
 
       friend.friends.loaded = 0;
       friend.friends.render();
@@ -801,13 +826,15 @@ function socketConnection(path) {
 
     socket.on('friendRequestRemove', res => {
 
-      account.owner.sentRequestsId.splice(account.owner.sentRequestsId.indexOf(res),1);
+      if (account.owner.sentRequestsId.indexOf(res) !== -1)
+       account.owner.sentRequestsId.splice(account.owner.sentRequestsId.indexOf(res),1);
 
     });
 
     socket.on('friendDelete', res => {
 
-      account.owner.friendsId.splice(account.owner.friendsId.indexOf(res),1);
+      if (account.owner.friendsId.indexOf(res) !== -1)
+        account.owner.friendsId.splice(account.owner.friendsId.indexOf(res),1);
 
     });
 

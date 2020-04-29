@@ -55,12 +55,4 @@ const finish = {
     }
 };
 
-// finish.create({
-//     position: {
-//         lat: 40.181726,
-//         lng: 44.516786
-//     },
-//     name: 'Aznavuri Hraparak'
-// }, {});
-
 module.exports = finish;

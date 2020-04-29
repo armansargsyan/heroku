@@ -1,0 +1,41 @@
+
+input.validation:invalid {
+  border: 2px dashed red;
+}
+
+/* input.validation:valid {
+  border: 2px dashed green;
+} */
+
+input.invalidation {
+  border: 2px dashed red;
+}
+
+div.notification{
+  position: fixed;
+  display: flex;
+  top: 20px;
+  margin-left: 50%; transform: translateX(-15vw);
+  width: 30vw;
+  height: 40px;
+  background-color: black;
+  color: white;
+  border-radius: 20px;
+  font-family:monospace;
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 10;
+
+  transition: 0.5s;
+
+  visibility: hidden;
+  opacity: 0;
+}
+
+div.activeNotification{
+  visibility: visible;
+  opacity: 1;
+  top: 50px;
+}

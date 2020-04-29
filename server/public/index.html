@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/validation.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <title></title>
+  </head>
+  <body>
+
+    <div class="notification"></div>
+
+    <div class="errorLayer">
+      <div class="errorWindow">
+        <div class="errorClose" onclick="buttons.closeErrorButton.click()"></div>
+        <p></p>
+      </div>
+    </div>
+<!--                      Sign in And Create account                   --->
+    <div class="authenticationDiv">
+
+
+
+      <div class="signInDiv authen">
+        <h1>Sign In</h1>
+
+        <form class="signInForm" onsubmit="account.signIn.sendReq();return false;">
+
+
+
+          <input type="email" name="email" placeholder="Email" autocomplete="off" required>
+          <input type="password" name="password" placeholder="Password" minlength="6" maxlength="20" pattern="\w*" required>
+          <button type="button" id="createAccountDiv" class="createNewAccount" name="button" onclick="buttons.authenticationButton.click(this)">Create</button>
+          <button type="submit" class="signIn" name="button">Sign In</button>
+
+        </form>
+      </div>
+
+      <div class="createAccountDiv authen">
+
+        <h1>Create Account</h1>
+
+        <form class="createAccountForm" onsubmit="account.createAccount.sendReq();return false">
+
+          <input type="text" class="nickName" name="nickName" placeholder="NickName" autocomplete="off" minlength="2" maxlength="20" pattern="[^\s]*" required>
+          <input type="number" class="age" name="age" placeholder="Age" autocomplete="off" min="5" max="256" required>
+          <input type="text" name="country" id="country" placeholder="Country" autocomplete="off">
+          <input type="text" name="city" placeholder="City" autocomplete="off">
+
+          <input type="email" name="email" placeholder="Email" autocomplete="off" required>
+          <input type="password" name="password" id="password" placeholder="Password" minlength="6" maxlength="20" pattern="\w*" required>
+          <input type="password" name="confPassword" id="confPassword" placeholder="Confirm Password" minlength="6" maxlength="20" pattern="\w*" required>
+          <button type="button" id="signInDiv" class="cancel" name="button" onclick="buttons.authenticationButton.click(this)">Cancel</button>
+          <button type="submit" class="create" name="button">Create</button>
+
+        </form>
+      </div>
+
+    </div>
+<!--                      Buttons layer                   --->
+
+    <div class="buttonDiv">
+      <a href="#" class="menuButton" onclick="buttons.menuButton.click()" data-active="false">
+        <span class="menuIcon"></span>
+      </a>
+      <div class="roomExit" onclick="room.leave()"></div>
+      <div class="playPageDiv" id="play" data-room="false">
+        <a href="#" class="playPageButton"  onclick="buttons.playPageButton.click()"></a>
+      </div>
+      <form class="searchFriendForm" onsubmit="friend.friendFind.render();return false" data-active="false">
+        <input type="text" class="searchFriendInput" name="playerLogin" placeholder="Find New Friends" autocomplete="off">
+        <button type="submit" class="searchFriendButton" name="button"></button>
+      </form>
+      <div class="menuDiv" id="menuDiv">
+        <a href="#" class="searchButton" id="search" onclick="buttons.searchButton.click()"></a>
+        <a href="#" class="accountButton" id="account" onclick="buttons.otherButton.click(this)"></a>
+        <a href="#" class="infoButton" id="info" onclick="buttons.otherButton.click(this)"></a>
+        <a href="#" class="supportButton" id="support" onclick="buttons.otherButton.click(this)"></a>
+        <a href="#" class="languageButton"  onclick="buttons.languageButton.click()" data-active='false'></a>
+          <a href="#" id="Arm" class="armFlag flag" onclick="buttons.languageButton.selectLanguage(this)" data-active="false"></a>
+          <a href="#" id="Rus" class="rusFlag flag" onclick="buttons.languageButton.selectLanguage(this)" data-active="false"></a>
+          <a href="#" id="Eng" class="engFlag flag" onclick="buttons.languageButton.selectLanguage(this)" data-active="true"></a>
+      </div>
+    </div>
+
+<!--                           Pages layer                  -->
+    <div class="conteinerLayer" data-active="false"></div>
+
+
+    <div class="conteiner">
+      <div class="play page">
+        <div class="createRoomDiv">
+          <div class="createRoomCancel"></div>
+          <button type="button" class="addFinishComplate">Select</button>
+
+          <div id="createRoomMap" class="createRoomMap"></div>
+          <form class="createRoomForm" onsubmit="room.create();return false">
+            <h1>Create Room</h1>
+            <input type="text" name="roomName" placeholder="Room Name" minlength="2" maxlength="20" required>
+            <input type="number" name="pin" placeholder="PIN" min="1000" max="9999">
+            <button type="button" class="addFinish">Add finish point</button>
+            <button type="submit">Create</button>
+          </form>
+        </div>
+        <div class="PlayButtonBox">
+
+          <a href="#" class="playButton" data-active="false" onclick="buttons.playButton.click()"></a>
+          <div class="createRoomButton" onclick="buttons.playButton.createRoomButton.click()"></div>
+          <div class="findRoomButton" id="findRoom" onclick=buttons.otherButton.click(this)></div>
+
+        </div>
+      </div>
+
+      <div class="search page">
+
+        <div class="searchResultList"></div>
+
+      </div>
+
+      <div class="account page">
+
+        <div class="editAccountButton" id="accountSettings" onclick="buttons.otherButton.click(this)">
+          <a href="#"></a>
+        </div>
+
+        <div class="accountAboveLayer"></div>
+
+        <div class="accountWorkingArea">
+
+          <div class="accountInfo">
+            <div class="profilePicture">
+              <div class="avatarka"></div>
+            </div>
+
+            <h1></h1><br>
+            <p></p>
+            <div class="friendRequestButton" id="friendRequests" onclick="buttons.otherButton.click(this)">
+              <div></div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+        <div class="friendList"></div>
+      </div>
+
+      <div class="info page">
+        <div class="infoAboveLayer"></div>
+        <div class="infoTextBox">
+          <p class="infoText">
+            So perhaps, you've generated some fancy text, and you're content that you can now copy and paste your fancy text
+            in the comments section of funny cat videos, but perhaps you're wondering how it's even poss
+            ible to change the font of your text? Is it some sort of hack? Are you copying and pasting an actual font?
+            Well, the answer is actually no - rather than generating fancy fonts, this converter creates fancy symbols.
+            The explanation starts with unicode; an industry standard which creates the specification for thousands of different symbols and characters.
+            All the characters that you see on your electronic devices, and printed in books, are likely specified by the unicode standard.
+            So perhaps, you've generated some fancy text, and you're content that you can now copy and paste your fancy text
+            in the comments section of funny cat videos, but perhaps you're wondering how it's even poss
+            ible to change the font of your text? Is it some sort of hack? Are you copying and pasting an actual font?
+            Well, the answer is actually no - rather than generating fancy fonts, this converter creates fancy symbols.
+            The explanation starts with unicode; an industry standard which creates the specification for thousands of different symbols and characters.
+            All the characters that you see on your electronic devices, and printed in books, are likely specified by the unicode standard.
+            So perhaps, you've generated some fancy text, and you're content that you can now copy and paste your fancy text
+            in the comments section of funny cat videos, but perhaps you're wondering how it's even poss
+            ible to change the font of your text? Is it some sort of hack? Are you copying and pasting an actual font?
+            Well, the answer is actually no - rather than generating fancy fonts, this converter creates fancy symbols.
+            The explanation starts with unicode; an industry standard which creates the specification for thousands of different symbols and characters.
+            All the characters that you see on your electronic devices, and printed in books, are likely specified by the unicode standard.
+            So perhaps, you've generated some fancy text, and you're content that you can now copy and paste your fancy text
+            in the comments section of funny cat videos, but perhaps you're wondering how it's even poss
+            ible to change the font of your text? Is it some sort of hack? Are you copying and pasting an actual font?
+            Well, the answer is actually no - rather than generating fancy fonts, this converter creates fancy symbols.
+            The explanation starts with unicode; an industry standard which creates the specification for thousands of different symbols and characters.
+            All the characters that you see on your electronic devices, and printed in books, are likely specified by the unicode standard.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="support page">
+
+        <div class="supportButtons">
+
+          <div class="supportCall" >
+            <a href="#"></a>
+          </div>
+          <div class="supportEmail">
+            <a href="https://mail.google.com/"></a>
+          </div>
+          <div class="supportFacebook">
+            <a href="https://www.facebook.com/"></a>
+          </div>
+          <div class="supportInstagram">
+            <a href="https://www.instagram.com/"></a>
+          </div>
+          <div class="supportViber">
+            <a href="https://www.viber.com"></a>
+          </div>
+          <div class="supportWhatsapp">
+            <a href="https://www.whatsapp.com"></a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="accountSettings page">
+
+        <input id="uploadImageFile" type="file" accept="image/*" style="display: none">
+
+        <div class="backToAccount" id="account" onclick="buttons.otherButton.click(this)">
+          <a href="#"></a>
+        </div>
+        <div class="settingsBox">
+
+          <div class="changeProfilePicture" onclick="buttons.changePictureButton.click()" data-active="false">
+            <div class="avatarka">
+              <a href="#" ></a>
+            </div>
+            <div class="camera avatarkaButton" onclick="account.changeProfilePicture.click()">
+              <a href="#" class="camera"></a>
+            </div>
+            <div class="delete avatarkaButton" onclick="account.deleteProfilePicture()">
+              <a href="#" class="delete"></a>
+            </div>
+
+
+          </div>
+          <div class="settingsItems">
+
+            <div id="changePassword" class="changePassword accountUpdate" onclick="buttons.accountUpdateButton.click(this)" data-active='false'>Change Password</div>
+            <form class="changePassword accountUpdates" onsubmit="account.changePassword.sendReq();return false">
+              <input type="password" name="currentPassword" id="currentPassword" placeholder="Current Password" minlength="6" maxlength="20" pattern="\w*" required>
+              <input type="password" name="newPassword" id="newPassword" placeholder="New Password" minlength="6" maxlength="20" pattern="\w*" required>
+              <input type="password" name="confNewPassword" id="confNewPassword" placeholder="Confirm New Password" minlength="6" maxlength="20" pattern="\w*" required>
+              <button type="submit" name="changeButton">Save</button>
+            </form>
+
+            <div id="changeEmail" class="changeEmail accountUpdate" onclick="buttons.accountUpdateButton.click(this)" data-active='false'>Change Email</div>
+            <form class="changeEmail accountUpdates" onsubmit="account.changeEmail();return false">
+              <input type="email" name="newEmail" placeholder="New Email" autocomplete="off" required>
+              <button type="submit" name="changeButton">Save</button>
+            </form>
+
+            <div id="personal" class="personalData accountUpdate" onclick="buttons.accountUpdateButton.click(this)" data-active='false'>Personal Data</div>
+            <form class="personal accountUpdates" onsubmit="account.changePersonalData.sendReq();return false">
+              <input type="text" class="changeNickName" name="changeNickName" autocomplete="off" minlength="2" maxlength="20" pattern="[^\s]*" placeholder="NickName">
+              <input type="number" class="changeAge" name="changeAge" autocomplete="off" min="5" max="256" placeholder="Age">
+              <input type="text" name="changeCountry" placeholder="Country" autocomplete="off">
+              <input type="text" name="changeCity" placeholder="City" autocomplete="off">
+              <button type="submit" name="changeButton">Save</button>
+            </form>
+
+            <div id="deleteAccount" class="deleteAccount accountUpdate" onclick="buttons.accountUpdateButton.click(this)" data-active='false'>Delete Account</div>
+            <form class="deleteAccount accountUpdates" onsubmit="account.deleteAccount();return false">
+              <input type="password" name="password" placeholder="Password" minlength="6" maxlength="20" pattern="\w*" required>
+              <button type="submit" name="">Delete</button>
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="friendRequests page">
+        <div class="friendRequestList"></div>
+        <div class="backToAccount" id="account" onclick="buttons.otherButton.click(this)">
+          <a href="#"></a>
+        </div>
+      </div>
+
+      <div class="room page">
+        <div class="roomInfo"></div>
+        <div class="roomControl">
+          <div></div>
+        </div>
+
+        <div class="roomPlayers">
+          <div class="addPlayers"></div>
+        </div>
+
+        <div class="roomChat">
+          <form class="roomChatForm" onsubmit="return false">
+            <input type="text" name="message">
+            <button type="submit"></button>
+          </form>
+        </div>
+      </div>
+
+      <div class="findRoom page">
+        <div class="roomEnterDiv">
+          <form onsubmit="return false">
+            <input type="number" class="roomEnterPin" placeholder="PIN" min="1000" max="9999" required>
+            <button type="submit">Enter</button>
+          </form>
+        </div>
+        <form class='findRoomForm' onsubmit="room.search.render();return false">
+          <input type="text" >
+          <button type="submit"></button>
+        </form>
+        <div class="findRoomResult"></div>
+      </div>
+
+
+    </div>
+  </body>
+<!--  <script src="scripts/maps.js" type="text/javascript"></script>-->
+<!---->
+<!--  <script async defer-->
+<!--          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXjvuOKBkXi6jE6U4YXzto8PSNSOekRQI&callback=openMap">-->
+<!--    </script>-->
+
+  <script src="scripts/buttons.js" type="text/javascript"></script>
+  <script src="scripts/script.js" type="text/javascript"></script>
+  <script src="scripts/validation.js" type="text/javascript"></script>
+<!--  <script src="scripts/language.js" type="module"></script>-->
+
+</html>

@@ -13,7 +13,7 @@ const socket = require('./socket/connection');
 
 const app = express();
 
-const Port = 5000;
+const Port = process.env.PORT || 5000;
 //mongodb://localhost:27017/esim
 function engine() {
   mongoose.connect('mongodb+srv://heroku:1111@cluster0-7l3fr.mongodb.net/',{
